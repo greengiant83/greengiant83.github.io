@@ -39,7 +39,13 @@ AFRAME.registerComponent("dupliverts", {
 		Promise.all([getMesh(self.data.pointDonor), getMesh(self.el)]).then(function(results)
 		{
 			var pointMesh = self.pointMesh = results[0];
-			var cloneMesh = results[1];			
+			var cloneMesh = results[1];	
+			//var material = cloneMesh.material.clone();
+			var materials = [
+				new THREE.MeshStandardMaterial({color: 0xff0000, metalness: 0, roughness: 0.5}),
+				new THREE.MeshStandardMaterial({color: 0x1e0e03, metalness: 0, roughness: 0.5}),
+				new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0, roughness: 0.5})
+			]
 
 			for(var i=0;i<pointMesh.geometry.attributes.position.array.length;i+=pointMesh.geometry.attributes.position.itemSize)
 			{
@@ -59,6 +65,9 @@ AFRAME.registerComponent("dupliverts", {
 				var rot = new THREE.Quaternion();
 				rot.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
 				clone.scale.set(0.1, 0.1, 0.1);
+
+
+				clone.material = materials[(i/3) % materials.length];
 				
 				self.el.sceneEl.object3D.add(clone);
 				self.clones.push({ object: clone, localPosition: pos, normal: normal, localRotation: rot });
@@ -95,8 +104,8 @@ AFRAME.registerComponent("dupliverts", {
 			var clone = self.clones[i];
 			clone.object.position.copy(clone.localPosition);
 			clone.object.position.applyMatrix4(self.pointMesh.matrixWorld);
-			clone.object.quaternion.multiplyQuaternions(clone.localRotation, self.rotOffset);
-			//clone.object.quaternion.multiplyQuaternions(self.rotOffset, clone.localRotation);
+			//clone.object.quaternion.multiplyQuaternions(clone.localRotation, self.rotOffset);
+			clone.object.quaternion.multiplyQuaternions(self.rotOffset, clone.localRotation);
 		}
 	}
 });
