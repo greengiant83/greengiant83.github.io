@@ -1,0 +1,162 @@
+{
+    "accessors" : [
+        {
+            "bufferView" : 0, 
+            "componentType" : 5121, 
+            "count" : 48, 
+            "max" : [
+                39
+            ], 
+            "min" : [
+                0
+            ], 
+            "type" : "SCALAR"
+        }, 
+        {
+            "bufferView" : 1, 
+            "componentType" : 5126, 
+            "count" : 40, 
+            "max" : [
+                0.5, 
+                1.0625, 
+                0.4999999701976776
+            ], 
+            "min" : [
+                -0.5, 
+                -1.0625, 
+                -0.4999999701976776
+            ], 
+            "type" : "VEC3"
+        }, 
+        {
+            "bufferView" : 2, 
+            "componentType" : 5126, 
+            "count" : 40, 
+            "max" : [
+                1.0, 
+                0.44721361994743347, 
+                1.0
+            ], 
+            "min" : [
+                -1.0, 
+                -0.44721361994743347, 
+                -1.0
+            ], 
+            "type" : "VEC3"
+        }
+    ], 
+    "asset" : {
+        "generator" : "Khronos Blender glTF 2.0 exporter", 
+        "version" : "2.0"
+    }, 
+    "bufferViews" : [
+        {
+            "buffer" : 0, 
+            "byteLength" : 48, 
+            "byteOffset" : 0, 
+            "target" : 34963
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 480, 
+            "byteOffset" : 48, 
+            "target" : 34962
+        }, 
+        {
+            "buffer" : 0, 
+            "byteLength" : 480, 
+            "byteOffset" : 528, 
+            "target" : 34962
+        }
+    ], 
+    "buffers" : [
+        {
+            "byteLength" : 1008, 
+            "uri" : "cube.bin"
+        }
+    ], 
+    "cameras" : [
+        {
+            "name" : "Camera", 
+            "perspective" : {
+                "aspectRatio" : 1.7777777777777777, 
+                "yfov" : 0.5483348957076358, 
+                "zfar" : 10000.0, 
+                "znear" : 0.05000000074505806
+            }, 
+            "type" : "perspective"
+        }
+    ], 
+    "materials" : [
+        {
+            "name" : "Material", 
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.640003213882494, 
+                    0.0, 
+                    0.0036913592918419724, 
+                    1.0
+                ], 
+                "metallicFactor" : 0.0
+            }
+        }
+    ], 
+    "meshes" : [
+        {
+            "name" : "Cube", 
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "NORMAL" : 2, 
+                        "POSITION" : 1
+                    }, 
+                    "indices" : 0, 
+                    "material" : 0
+                }
+            ]
+        }
+    ], 
+    "nodes" : [
+        {
+            "camera" : 0, 
+            "name" : "Correction_-Camera", 
+            "rotation" : [
+                -0.7071067690849304, 
+                -0.0, 
+                0.0, 
+                0.7071067690849304
+            ]
+        }, 
+        {
+            "children" : [
+                0
+            ], 
+            "name" : "-Camera", 
+            "rotation" : [
+                0.5341389179229736, 
+                0.2713526487350464, 
+                -0.19233660399913788, 
+                0.7772193551063538
+            ], 
+            "translation" : [
+                3.570233106613159, 
+                1.9948248863220215, 
+                4.522062301635742
+            ]
+        }, 
+        {
+            "mesh" : 0, 
+            "name" : "Cube"
+        }
+    ], 
+    "scene" : 0, 
+    "scenes" : [
+        {
+            "name" : "Scene", 
+            "nodes" : [
+                2, 
+                1
+            ]
+        }
+    ]
+}

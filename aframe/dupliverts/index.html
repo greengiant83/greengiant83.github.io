@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+	    <script src="https://unpkg.com/aframe-auto-detect-controllers-component@0.1.4/dist/aframe-auto-detect-controllers-component.min.js"></script>
+	    <script src="https://unpkg.com/aframe-controller-cursor-component@0.2.7/dist/aframe-controller-cursor-component.min.js"></script>
+  		<script src="https://unpkg.com/super-hands@1.1.0/dist/super-hands.min.js"></script>
+  		<script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.11.4/dist/aframe-extras.min.js"></script>
+  		
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<a-scene>
+			<a-assets>
+				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
+        		<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+        		<asset-item id="pointDonorAsset" src="sphere.gltf"></asset-item>
+        		<asset-item id="cloneSourceAsset" src="cube.gltf"></asset-item>
+
+        		<asset-item id="sphereFlat" src="sphereFlat.gltf"></asset-item>
+			</a-assets>
+			<!-- - - - - - - - -->
+			<a-entity position="0 1.5 -2" id="pointDonor" center-and-scale="a: #leftHand; b: #rightHand" gltf-model-next="#pointDonorAsset"></a-entity>
+
+			<a-entity dupliverts="pointDonor: #pointDonor; a: #leftHand; b: #rightHand" gltf-model-next="#cloneSourceAsset"></a-entity>
+
+
+			<!--<a-entity position="-1 2 -5" gltf-model-next="#sphereFlat"></a-entity>
+			<a-entity position="1 2 -5" gltf-model-next="#cloneSourceAsset"></a-entity>			-->
+
+			
+      		<a-entity id="background">
+      			<a-entity position="0 0 0">
+	      			<a-camera></a-camera>
+		      		<a-entity id="leftHand" hand-controls="left" super-hands teleport-controls sphere-collider="objects: a-box"></a-entity>
+		      		<a-entity id="rightHand" hand-controls="right" super-hands teleport-controls sphere-collider="objects: a-box"></a-entity>
+	      		</a-entity>
+	      		
+				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
+				<a-plane static-body src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
+				<a-light type="ambient" color="#445451"></a-light>
+				<a-light type="point" intensity="1" position="2 4 4"></a-light>
+    		</a-entity>
+		</a-scene>
+	</body>
+</html>
