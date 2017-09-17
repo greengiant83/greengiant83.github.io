@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+	    <script src="https://unpkg.com/super-hands@2.0.1/dist/super-hands.min.js"></script>
+	    <script src="sounds.js"></script>
+	    <script src="tree.js"></script>
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<a-scene touch-to-click-converter afog="type: linear; color: #000; near:1; far:15;">
+			<a-assets>
+				<script>soundManager.injectAssets()</script>
+				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
+        		<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+			</a-assets>
+			<!-- - - - - - - - -->
+			
+			<a-entity progressive-controls="objects: .seedSurface, .growSurface, a-link; maxLevel: point">
+				<a-entity id="rhand" teleport-controls="curveShootingSpeed:25" tree-grower class="right-controller"></a-entity>
+				<a-entity id="lhand" teleport-controls="curveShootingSpeed:25" tree-grower class="left-controller"></a-entity>
+			</a-entity>
+
+      		<!-- - - - - - - - -->				      	
+      		<a-entity id="background">	      		
+				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
+				<a-plane class="seedSurface" src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
+				<a-light type="ambient" color="#445451"></a-light>
+				<a-light type="point" intensity="1" position="2 4 4"></a-light>
+    		</a-entity>
+		</a-scene>
+	</body>
+</html>
