@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Links</title>
+		<meta name="description" content="Motion Capture Components – A-Frame">
+		<!--<script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>-->
+		<script src="aframe-v0.7.0.min.js"></script> <!-- Using a local version because it incorporates a bug fix thats not in the main release -->
+		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+		<script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.12.3/dist/aframe-extras.min.js"></script>
+		<script src="aframe-tooltip-component.js"></script>
+		<script src="camera-position.js"></script>
+		<script src="link-controls.js"></script>
+		<!--<script src="menu.js"></script>-->
+	</head>
+	<body>
+		<a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse" camera-position>
+			<a-assets>
+				<img id="arena" crossOrigin="anonymous" src="https://cdn.aframe.io/link-traversal/aframeArena.png">
+				<img id="thumbCity" crossOrigin="anonymous" src="https://cdn.aframe.io/link-traversal/thumbs/city.png">
+				<img id="thumbSunrise" crossOrigin="anonymous" src="https://cdn.aframe.io/link-traversal/thumbs/sunrise.png">
+				<img id="thumbMountains" crossOrigin="anonymous" src="https://cdn.aframe.io/link-traversal/thumbs/mountains.png">
+
+				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
+				<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+				<img id="ABlastSnapshot" src="screenshot-a-blast.png">
+				<img id="APainterSnapshot" src="screenshot-a-painter.png">
+				<img id="MuseumSnapshot" src="museum.png">
+			</a-assets>
+			<a-entity gltf-model-next="src: url(text.gltf)" position="-7 0 5" rotation="0 90 0" scale="2 2 2"></a-entity>
+			<a-link title="Painter" href="https://aframe.io/a-painter/" position="-2.5 1.5 -2.0" rotation="0 45 0" image="#APainterSnapshot"></a-link>
+			<a-link title="Blast" href="https://aframe.io/a-blast/" position="0 1.5 -3.0" image="#ABlastSnapshot"></a-link>
+			<a-link title="Museum" href="https://cecropia.github.io/thehallaframe/#" position="2.5 1.5 -2.0" rotation="0 -45 0" image="#MuseumSnapshot"></a-link>
+			
+			<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:[link]"></a-entity>
+			<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:[link]"></a-entity>		
+
+<!--
+	<a-entity id="leftHand" teleport-controls link-controls="hand: left"></a-entity>
+	<a-entity id="rightHand" teleport-controls link-controls="hand: right"></a-entity>
+		el.setAttribute('laser-controls',{ hand:this.data.hand });
+		el.setAttribute('raycaster', { far:100, objects:'[link]' });
+-->
+
+
+			<a-entity>
+				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
+				<a-plane src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
+				<a-light type="ambient" color="#445451"></a-light>
+				<a-light type="point" intensity="1" position="2 4 4"></a-light>
+    		</a-entity>
+		</a-scene>
+	</body>
+</html>
+
+
