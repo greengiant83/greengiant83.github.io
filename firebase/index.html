@@ -1,18 +1,19 @@
 <html>
 	<head>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
 		<script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
 		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
 		<script src="index.js"></script>
 	</head>
 	<body>
-		<a-scene raycaster="far: 100; objects: #mybox,#sequencer;" cursor="rayOrigin: mouse">
+		<a-scene raycaster cursor="rayOrigin: mouse">
 			<a-assets>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
     			<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
 			</a-assets>
 
-			<a-entity id="sequencer" shadow="cast:true" sequencer-panel position="-1 0.25 -2"></a-entity>
-			<a-box position="4 0 -2" shadow="cast:true"></a-box>
+			<a-box id="indicator" position="0 2 -4" rotation="0 45 45" shadow="cast:true"></a-box>
+			<a-sphere clicker position="0 0 -4" color="red" shadow="cast:true"></a-sphere>
 
 			<!-- - - - - - - - -->
 
@@ -23,7 +24,6 @@
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 				<a-plane shadow="receive:true;cast:false" src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
 				<a-light type="ambient" color="#445451"></a-light>
-				<!--<a-light type="point" castShadows="true" intensity="1" position="2 4 4"></a-light>-->
 				<a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
 	  		</a-entity>
 		</a-scene>

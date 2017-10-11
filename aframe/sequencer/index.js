@@ -85,10 +85,6 @@
 			this.geometry.faceVertexUvs[0].push([square.uvA, square.uvB, square.uvC])
 			this.geometry.faceVertexUvs[0].push([square.uvC, square.uvD, square.uvA]);
 
-			/*this.geometry.faceVertexUvs[1] = [];
-			this.geometry.faceVertexUvs[1].push([square.uvA, square.uvB, square.uvC])
-			this.geometry.faceVertexUvs[1].push([square.uvC, square.uvD, square.uvA]);*/
-
 			this.squares.push(square);
 		},
 	});

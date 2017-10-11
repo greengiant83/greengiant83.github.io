@@ -65,6 +65,17 @@
        r="1.3229164"
        gradientTransform="matrix(2.0000053,5.7011881e-6,-5.7011806e-6,2.0000027,-55.562183,-106.5006)"
        gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4547"
+       id="radialGradient4562-8"
+       cx="50.270836"
+       cy="101.20833"
+       fx="50.270836"
+       fy="101.20833"
+       r="1.3229164"
+       gradientTransform="matrix(2.0000462,-1.9053069e-6,1.8952001e-6,2.0107084,-38.896207,-102.33452)"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -74,7 +85,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="205.22489"
+     inkscape:cx="225.49275"
      inkscape:cy="723.69821"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -132,5 +143,32 @@
        y="105.17708"
        inkscape:export-xdpi="307.95816"
        inkscape:export-ydpi="307.95816" />
+    <rect
+       id="rect3715-0"
+       width="10.64"
+       height="10.64"
+       x="59.002083"
+       y="98.505829"
+       style="fill:#000000;stroke-width:0.26685542"
+       inkscape:export-xdpi="305.56"
+       inkscape:export-ydpi="305.56" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4524-1-0"
+       width="2.6458328"
+       height="2.6458359"
+       x="65.616661"
+       y="105.17709"
+       inkscape:export-xdpi="305.56"
+       inkscape:export-ydpi="305.56" />
+    <rect
+       style="fill:url(#radialGradient4562-8);fill-opacity:1;stroke:none;stroke-width:0.10026853;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4524-8"
+       width="2.6458931"
+       height="2.6600039"
+       x="60.325031"
+       y="99.835823"
+       inkscape:export-xdpi="305.56"
+       inkscape:export-ydpi="305.56" />
   </g>
 </svg>
