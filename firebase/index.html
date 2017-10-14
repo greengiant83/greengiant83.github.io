@@ -13,20 +13,21 @@
 			</a-assets>
 
 			<a-box id="indicator" position="0 2 -4" rotation="0 45 45" shadow="cast:true"></a-box>
-			<a-sphere clicker position="0 0 -4" color="red" shadow="cast:true"></a-sphere>
+			<a-sphere position="0 0 -4" color="red" shadow="cast:true"></a-sphere>
 
 			<!-- - - - - - - - -->
 
 			<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:#mybox,#sequencer"></a-entity>
 			<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:#mybox,#sequencer"></a-entity>
-				      	
-	  		<a-entity id="background">	      		
+			<a-entity camera clicker position="0 1.6 0"></a-entity>	      	
+  		<a-entity id="background">	      		
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 				<a-plane shadow="receive:true;cast:false" src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
 				<a-light type="ambient" color="#445451"></a-light>
 				<a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
-	  		</a-entity>
+  		</a-entity>
 		</a-scene>
+
 
 		<!-- GitHub Corner. -->
 		<a href="https://github.com/greengiant83/greengiant83.github.io/tree/master/aframe/sequencer" class="github-corner">
