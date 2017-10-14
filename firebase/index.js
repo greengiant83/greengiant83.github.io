@@ -117,7 +117,6 @@ class TwoTouchRotate
 			this.startTime = performance.now();
 			this.accumulatedRot = 0;
 			this.isRecognizing = true;
-			console.log("checking to see if this is rotation or scaling...")
 		}
 
 		if(this.touchCount < 2 && this.lastTouchCount >= 2)
@@ -128,25 +127,16 @@ class TwoTouchRotate
 
 		if(this.isRecognizing)
 		{
-			if(performance.now() - this.startTime > 200)
-			{
-				this.isRecognizing = false;
-				console.log("doesn't look like rotation")
-			}
+			if(performance.now() - this.startTime > 200) this.isRecognizing = false;
 
 			if(Math.abs(this.accumulatedRot) > this.rotThreshold)
 			{
 				this.isRotating = true;
 				this.isRecognizing = false;
-				console.log("looks like rotation to me");
 			}
 		}
 
-		if(this.touchCount >= 2 && this.isRecognizing) 
-		{
-			this.accumulatedRot += this.value;
-			console.log("rot", this.accumulatedRot);
-		}
+		if(this.touchCount >= 2 && this.isRecognizing) this.accumulatedRot += this.value;
 	}
 
 	getAngleDifference(a, b)
