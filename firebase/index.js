@@ -15,7 +15,7 @@ firebase.auth().onAuthStateChanged(function(user)
 });
 
 
-AFRAME.registerComponent("clicker", {
+AFRAME.registerComponent("remote-movement", {
 	init: function() 
 	{
 		var self = this;
