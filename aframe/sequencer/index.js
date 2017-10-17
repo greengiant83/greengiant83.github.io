@@ -13,11 +13,54 @@ var db = firebase.database();
 
 (function() 
 {
+	AFRAME.registerComponent("sequencer-toggle", {
+		init: function()
+		{
+			var self = this;
+			var ref = db.ref("isPlaying");
+			var isPlaying;
+
+			ref.on("value", snap => {
+				isPlaying = snap.val();
+				self.el.setAttribute("color", isPlaying ? "rgb(0,255,255)" : "rgb(0,10,40)");
+			})
+			this.el.addEventListener("click", function()
+			{
+				ref.set(!isPlaying);
+			});
+		}
+	});
+
 	AFRAME.registerComponent("sequencer-panel", {
 		schema: {
 			rows: { default: 8 },
 			cols: { default: 12 },
 			size: { default: 0.25 }
+		},
+
+		init: function()
+		{
+			var self = this;
+			var isPlayingRef = db.ref("isPlaying");
+			var playTimer;
+			var colIndex = 0;
+
+			isPlayingRef.on("value", snap => {
+				var isPlaying = snap.val();
+				if(playTimer) clearInterval(playTimer);
+
+				if(isPlaying)
+				{
+					colIndex = 0;
+					playTimer	= setInterval(function()
+					{
+						self.colSquares[colIndex].forEach(square => square.trigger());
+
+						colIndex++;
+						if(colIndex >= self.colSquares.length) colIndex = 0;
+					}, 500);
+				}
+			});
 		},
 
 		update: function()
@@ -48,15 +91,6 @@ var db = firebase.database();
 				var square = e.detail.intersection.face.square;
 				square.isOn = !square.isOn;
 			});	
-
-			var colIndex = 0;
-			setInterval(function()
-			{
-				self.colSquares[colIndex].forEach(square => square.trigger());
-
-				colIndex++;
-				if(colIndex >= self.colSquares.length) colIndex = 0;
-			}, 500)	;
 		},
 
 		wireGridToDB: function()

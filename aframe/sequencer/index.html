@@ -32,7 +32,7 @@
 		</script>
 	</head>
 	<body>
-		<a-scene raycaster="far: 100; objects: #mybox,#sequencer;" cursor="rayOrigin: mouse" networked-scene="
+		<a-scene raycaster="far: 100; objects: .button,#sequencer;" cursor="rayOrigin: mouse" networked-scene="
 			room: dev;
 			debug: false;
 			adapter: easyrtc;
@@ -96,7 +96,7 @@
 			</a-assets>
 
 			<a-entity id="sequencer" shadow="cast:true" sequencer-panel position="-1 0.25 -2"></a-entity>
-			<a-box position="4 0 -2" shadow="cast:true"></a-box>
+			<a-box class="button" sequencer-toggle shadow="cast:true" position="-1.276 0.914 -2" scale="0.3 2.2 0.2"></a-box>
 
 			<!-- - - - - - - - -->
 			<a-entity id="player" networked="template:#player-template;showLocalTemplate:false;" spawn-in-circle="radius:0.5" wasd-controls>
@@ -110,7 +110,7 @@
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
 				<a-plane shadow="receive:true;cast:false" src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
 				<a-light type="ambient" color="#445451"></a-light>
-				<a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
+				<a-entity light="type:directional; castShadow:true;" position="-1 1 1"></a-entity>
 			</a-entity>
 		</a-scene>
 
