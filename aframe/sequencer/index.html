@@ -102,8 +102,8 @@
 			<a-entity id="player" networked="template:#player-template;showLocalTemplate:false;" spawn-in-circle="radius:0.5" wasd-controls>
 				<a-entity camera="userHeight: 1.6" look-controls networked="template:#head-template;showLocalTemplate:false;"></a-entity>
 
-				<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:#mybox,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
-				<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:#mybox,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
+				<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:.button,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
+				<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:.button,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
 			</a-entity>
 								
 			<a-entity id="background">	      		
