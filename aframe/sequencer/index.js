@@ -100,7 +100,8 @@ var db = firebase.database();
 						self.colSquares[colIndex].forEach(square => square.trigger());
 
 						colIndex++;
-						if(colIndex >= self.colSquares.length) colIndex = 0;
+
+						if(colIndex >= self.colSquares.length-1) colIndex = 0;
 					}, 500);
 				}
 			});
@@ -153,19 +154,19 @@ var db = firebase.database();
 			this.squares = [];
 			this.colSquares = [];
 			this.geometry.faceVertexUvs[0] = [];
-			for(var col=0;col<cols;col++)
+			for(var col=0;col<=cols;col++)
 			{
 				this.colSquares.push([]);
-				for(var row=0;row<rows;row++)
+				for(var row=0;row<=rows;row++)
 				{
 					this.geometry.vertices.push({x: col*size, y: row*size, z:Math.sin(col) * 0.1});
 				}
 
 				if(col > 0)
 				{
-					for(var row=1;row<rows;row++)
+					for(var row=1;row<=rows;row++)
 					{
-						this.addSquare(col + "-" + row, rows, row, col,
+						this.addSquare(row-1, col-1, rows,
 							{ x: col-1, y:row-1},
 							{ x: col, y:row-1},
 							{ x: col, y:row},
@@ -180,13 +181,13 @@ var db = firebase.database();
 			this.geometry.computeBoundingSphere();
 		},
 
-		addSquare: function(key, rows, row, col, a, b, c, d)
+		addSquare: function(row, col, rows, a, b, c, d)
 		{
-			var square = new SequencerSquare(key, row, col, this.geometry);
-			var ia = a.x * rows + a.y;
-			var ib = b.x * rows + b.y;
-			var ic = c.x * rows + c.y;
-			var id = d.x * rows + d.y;
+			var square = new SequencerSquare(row + "-" + col, row, col, this.geometry);
+			var ia = a.x * (rows+1) + a.y;
+			var ib = b.x * (rows+1) + b.y;
+			var ic = c.x * (rows+1) + c.y;
+			var id = d.x * (rows+1) + d.y;
 			var face;
 
 			face = new THREE.Face3(ia, ib, ic);
