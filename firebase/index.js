@@ -20,9 +20,14 @@ AFRAME.registerComponent("remote-movement", {
 	{
 		var self = this;
 		self.panController = new SingleTouchPan(this.el, { scalar: 2 });
+		self.panController.momentumX = new MomentumValue(self.panController.value, "x", self.panController, "isActive");
+		self.panController.momentumY = new MomentumValue(self.panController.value, "y", self.panController, "isActive");
+
 		self.zoomController = new TwoTouchZoom(this.el, { scalar: 10 });
+		self.zoomController.momentum = new MomentumValue(self.zoomController, "value", self.zoomController, "isActive");
 		self.rotateController = new TwoTouchRotate(this.el, { scalar: 30 });
 		self.touches = [];
+		
 
 		var db = firebase.database();
 		var devices = db.ref("devices");
@@ -33,7 +38,6 @@ AFRAME.registerComponent("remote-movement", {
 			devices.child(e.key + "/touches").on("value", function(data)
 			{
 				var newTouches = data.val();
-				//self.touches = newTouches ? newTouches : {};
 				self.touches.splice(0);
 				for(var key in newTouches)
 				{
@@ -56,6 +60,12 @@ AFRAME.registerComponent("remote-movement", {
 		this.zoomController.update(this.touches);
 		this.rotateController.update(this.touches);
 
+		var newPos = this.el.object3D.localToWorld(new THREE.Vector3(
+			this.panController.momentumX.value,
+			this.panController.momentumY.value,
+			this.zoomController.momentum.value)
+		);
+
 		if(this.rotateController.isRotating)
 		{
 			var objectRot = this.el.getAttribute("rotation");
@@ -64,14 +74,46 @@ AFRAME.registerComponent("remote-movement", {
 		}
 		else
 		{
-			var newPos = this.el.object3D.localToWorld(new THREE.Vector3(
-			this.panController.value.x,
-			this.panController.value.y,
-			this.zoomController.value));
 			this.el.setAttribute("position", newPos);
 		}
 	}
 });
+
+class MomentumValue
+{
+	constructor(sourceObject, sourceKey, activeObject, isActiveKey)
+	{
+		this.source = sourceObject;
+		this.sourceKey = sourceKey;
+		this.activeObject = activeObject;
+		this.isActiveKey = isActiveKey;
+	}
+
+	get value()
+	{
+		if(this.activeObject[this.isActiveKey])
+		{
+			this._value = this.source[this.sourceKey];
+		}
+		else
+		{
+			this._value *= 0.95;
+		}
+		return this._value;
+	}
+
+	tick()
+	{
+		
+	}
+
+	/*lerp(value1, value2, amount) 
+	{
+		amount = amount < 0 ? 0 : amount;
+		amount = amount > 1 ? 1 : amount;
+		return value1 + (value2 - value1) * amount;
+	}*/
+}
 
 class TwoTouchRotate
 {
@@ -92,6 +134,9 @@ class TwoTouchRotate
 		this.touchCount = touches.length;
 
 		this.recognizeRotation();
+
+		if(this.touchCount >= 2 && this.lastTouchCount < 2) this.isActive = true;
+		if(this.touchCount < 2 && this.lastTouchCount >= 2) this.isActive = false;
 
 		if(this.touchCount >= 2)
 		{
@@ -158,12 +203,16 @@ class TwoTouchZoom
 		this.el = element;
 		this.scalar = scalar;
 		this.value = 0;
+		this.isActive = false;
 	}
 
 	update(touches)
 	{
 		this.lastTouchCount = this.touchCount;
 		this.touchCount = touches.length;
+
+		if(this.touchCount >= 2 && this.lastTouchCount < 2) this.isActive = true;
+		if(this.touchCount < 2 && this.lastTouchCount >= 2) this.isActive = false;
 
 		if(this.touchCount >= 2)
 		{
@@ -193,6 +242,9 @@ class SingleTouchPan
 	{
 		this.touches = touches;
 		this.updateOrigin();
+
+		if(this.touchCount >= 1 && this.lastTouchCount < 1) this.isActive = true;
+		if(this.touchCount < 1 && this.lastTouchCount >= 1) this.isActive = false;
 
 		if(this.touchCount > 0)
 		{

@@ -12,10 +12,10 @@ AFRAME.registerComponent('spawn-in-circle', {
     var worldPoint = {x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z};
     el.setAttribute('position', worldPoint);
 
-    var angleDeg = angleRad * 180 / Math.PI;
+    /*var angleDeg = angleRad * 180 / Math.PI;
     var angleToCenter = -1 * angleDeg + 90;
     var rotationStr = '0 ' + angleToCenter + ' 0';
-    el.setAttribute('rotation', rotationStr);
+    el.setAttribute('rotation', rotationStr);*/
   },
 
   getRandomAngleInRadians: function() {

@@ -19,7 +19,7 @@
 
 			<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:#mybox,#sequencer"></a-entity>
 			<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:#mybox,#sequencer"></a-entity>
-			<a-entity camera remote-movement position="0 1.6 0" wasd-controls look-controls></a-entity>	      	
+			<a-entity camera remote-movement position="0 1.6 0" wasd-controls look-controls="touch-enabled: false"></a-entity>	      	
   		
   		<a-entity id="background">	      		
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>

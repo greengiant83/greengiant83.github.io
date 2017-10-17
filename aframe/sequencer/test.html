@@ -2,109 +2,27 @@
 	<head>
 		<script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
 		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-		<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
-		<script src="https://vrchat.herokuapp.com/easyrtc/easyrtc.js"></script>
 		<script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
-		<script src="js/spawn-in-circle.component.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
-		<script src="sounds.js"></script>
 		<script src="index.js"></script>
-
-		<script>
-			// Define custom schema for syncing avatar color, set by random-color
-			NAF.schemas.add({
-				template: '#head-template',
-				components: [
-					'position',
-					'rotation',
-					{
-						selector: '.head',
-						component: 'material'
-					}
-				]
-			});
-
-			// Called by Networked-Aframe when connected to server
-			function onConnect () {
-				console.log("onConnect");
-			}
-		</script>
 	</head>
 	<body>
-		<a-scene raycaster="far: 100; objects: #mybox,#sequencer;" cursor="rayOrigin: mouse" networked-scene="
-			room: dev;
-			debug: false;
-			adapter: easyrtc;
-			audio: true;
-			serverURL: https://vrchat.herokuapp.com;">
+		<a-scene raycaster="far: 100; objects: #mybox,#sequencer;" cursor="rayOrigin: mouse">
 			<a-assets>
-				<script>soundManager.injectAssets()</script>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
 				<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
 				
-				<!-- Templates -->
-
-				<!-- Player -->
-				<script id="player-template" type="text/html">
-					<a-entity></a-entity>
-				</script>
-
-				<!-- Head -->
-				<script id="head-template" type="text/html">
-					<a-entity class="avatar" scale="0.5 0.5 0.5">
-						<a-sphere class="head"
-							color="#5985ff"
-							scale="0.3 0.35 0.25"
-							random-color
-						></a-sphere>
-						<a-entity class="face"
-							position="0 0.05 0"
-						>
-							<a-sphere class="eye"
-								color="#efefef"
-								position="0.1 0.1 -0.2"
-								scale="0.12 0.12 0.12"
-							>
-								<a-sphere class="pupil"
-									color="#000"
-									position="0 0 -1"
-									scale="0.2 0.2 0.2"
-								></a-sphere>
-							</a-sphere>
-							<a-sphere class="eye"
-								color="#efefef"
-								position="-0.1 0.1 -0.2"
-								scale="0.12 0.12 0.12"
-							>
-								<a-sphere class="pupil"
-									color="#000"
-									position="0 0 -1"
-									scale="0.2 0.2 0.2"
-								></a-sphere>
-							</a-sphere>
-						</a-entity>
-					</a-entity>
-				</script>
-
-				<!-- Hand -->
-				<script id="hand-template" type="text/html">
-					<a-box scale="0.1 0.1 0.1"></a-box>
-				</script>
-
-				<!-- /Templates -->
 			</a-assets>
 
 			<a-entity id="sequencer" shadow="cast:true" sequencer-panel position="-1 0.25 -2"></a-entity>
 			<a-box position="4 0 -2" shadow="cast:true"></a-box>
 
-			<!-- - - - - - - - -->
-			<a-entity id="player" networked="template:#player-template;showLocalTemplate:false;" spawn-in-circle="radius:0.5" wasd-controls>
+			<!--<a-entity id="player" networked="template:#player-template;showLocalTemplate:false;" spawn-in-circle="radius:0.5" wasd-controls>
 				<a-entity camera="userHeight: 1.6" look-controls networked="template:#head-template;showLocalTemplate:false;"></a-entity>
 
 				<a-entity id="leftHand" teleport-controls laser-controls="hand: left" raycaster="far:100; objects:#mybox,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
 				<a-entity id="rightHand" teleport-controls laser-controls="hand: right" raycaster="far:100; objects:#mybox,#sequencer" networked="template:#hand-template;showLocalTemplate:false;"></a-entity>
-			</a-entity>
+			</a-entity>-->
 								
 			<a-entity id="background">	      		
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
