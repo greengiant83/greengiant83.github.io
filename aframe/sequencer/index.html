@@ -7,11 +7,18 @@
 		<script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
 		<script src="https://vrchat.herokuapp.com/easyrtc/easyrtc.js"></script>
 		<script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
-		<script src="js/spawn-in-circle.component.js"></script>
+		
+		<!--<script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> -->
+		<script src="acurvefix/index.js"></script>
 
 		<script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+
+		<script src="js/spawn-in-circle.component.js"></script>
 		<script src="BasicShader.js"></script>
+		<script src="hologram-material.js"></script>
 		<script src="sounds.js"></script>
+		<script src="sequencer-panel.js"></script>
+		<script src="sequencer-toggle.js"></script>
 		<script src="index.js"></script>
 
 		<script>
@@ -50,7 +57,7 @@
 				</script>
 
 				<script id="head-template" type="text/html">
-					<a-entity material-hologram class="head" gltf-model="src: url(head.gltf)"></a-entity>
+					<a-entity hologram-material class="head" gltf-model="src: url(avatars/generic-head/head.gltf)"></a-entity>
 				</script>
 
 				<!-- Hand -->
@@ -62,7 +69,33 @@
 			</a-assets>
 
 			<a-entity id="sequencer" shadow="cast:true" sequencer-panel position="-1 0.25 -2"></a-entity>
-			<a-box class="button" sequencer-toggle shadow="cast:true" position="-1.276 0.914 -2" scale="0.3 2.2 0.2"></a-box>
+			<a-box class="button" sequencer-toggle="sequencer: #sequencer" shadow="cast:true" position="-1.276 0.914 -2" scale="0.3 2.2 0.2"></a-box>
+
+			<a-box test class="button" color="white" scale="0.2 0.2 0.2" position="0 1.5 -0.5">
+				<a-box color="red" scale="0.5 0.5 0.5" position="0 0 .65"></a-box>
+			</a-box>
+
+
+ 		<a-curve id="track1" type="CatmullRom">
+        <a-curve-point position="-1 1 -1" rotation="0 0 180"></a-curve-point>
+        <a-curve-point position="0 2 -2"></a-curve-point>
+        <a-curve-point position="1 1 -1"></a-curve-point>
+    </a-curve>
+
+    <a-entity id="track2" curve="type:QuadraticBezier">
+        <a-curve-point position="-1 1 -1" rotation="0 0 180"></a-curve-point>
+        <a-curve-point position="0 2 -2"></a-curve-point>
+        <a-curve-point position="1 1 -1"></a-curve-point>
+    </a-curve>
+    
+    <!-- Draw the Curve -->
+    <a-draw-curve curveref="#track1" material="shader: line; color: blue;"></a-draw-curve>
+    <a-draw-curve curveref="#track2" material="shader: line; color: red;"></a-draw-curve>
+    
+    
+
+
+
 
 			<!-- - - - - - - - -->
 			<a-entity id="player" networked="template:#player-template;showLocalTemplate:false;" spawn-in-circle="radius:0.5" wasd-controls>

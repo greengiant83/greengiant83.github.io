@@ -10,6 +10,7 @@ var soundManager = (function()
 		{
 			if(!sceneEl) sceneEl = document.querySelector("a-scene");
 
+			console.log("playing note", note);
 			var soundIndex = note+1;
 			var soundEl = document.createElement("a-sound");
 			soundEl.setAttribute("src", "#sound" + soundIndex);
@@ -17,21 +18,20 @@ var soundManager = (function()
 			soundEl.addEventListener("sound-ended", function(e)
 			{
 				sceneEl.removeChild(e.target);
+				console.log("Removing note", note);
 			});
 			sceneEl.appendChild(soundEl);
 		},
 
 		injectAssets: function()
 		{
-			console.log("injecting assets");
-
+			var instrument = "Oboe";
 			for(var i=1;i<=37;i++)
 			{
-				document.write('<audio preload="true" id="sound' + i + '" src="sounds/Synth' + i + '.ogg"></audio>');
+				var path = 'sounds/' +  instrument + '/' + instrument + i + '.ogg';
+				document.write('<audio preload="true" id="sound' + i + '" src="' + path + '"></audio>');
 			}
 		}
 	}
 	return self;
 })();
-
-console.log("Sound Manager", soundManager);
