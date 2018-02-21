@@ -27,7 +27,8 @@
 				<img id="APainterSnapshot" src="screenshot-a-painter.png">
 				<img id="MuseumSnapshot" src="museum.png">
 			</a-assets>
-			<a-entity gltf-model-next="src: url(text.gltf)" position="-7 0 5" rotation="0 90 0" scale="2 2 2"></a-entity>
+			<a-entity shadow="cast:true" gltf-model-next="src: url(text.gltf)" position="-7 0 5" rotation="0 90 0" scale="2 2 2"></a-entity>
+			<a-box id="indicator" position="0 2 -4" rotation="0 45 45" shadow="cast:true"></a-box>
 			<a-link title="Painter" href="https://aframe.io/a-painter/" position="-2.5 1.5 -2.0" rotation="0 45 0" image="#APainterSnapshot"></a-link>
 			<a-link title="Blast" href="https://aframe.io/a-blast/" position="0 1.5 -3.0" image="#ABlastSnapshot"></a-link>
 			<a-link title="Museum" href="https://cecropia.github.io/thehallaframe/#" position="2.5 1.5 -2.0" rotation="0 -45 0" image="#MuseumSnapshot"></a-link>
@@ -45,7 +46,7 @@
 
 			<a-entity>
 				<a-sky height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"></a-sky>
-				<a-plane src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
+				<a-plane  shadow="receive:true;cast:false" src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
 				<a-light type="ambient" color="#445451"></a-light>
 				<a-light type="point" intensity="1" position="2 4 4"></a-light>
     		</a-entity>

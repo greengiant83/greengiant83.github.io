@@ -1,8 +1,10 @@
-AFRAME.registerComponent('fit-image',{
-	schema:{
-    	type:"string"
-  	},
-	init:function(){
+AFRAME.registerComponent('fit-image', {
+	schema: {
+		type:"string"
+	},
+
+	init: function()
+	{
 		var self = this;
 
 		var geometry = this.el.getAttribute('geometry');
@@ -10,7 +12,6 @@ AFRAME.registerComponent('fit-image',{
 
 		this.el.setAttribute("width", 0.1);
 		this.el.setAttribute("height", 0.1);
-
 		this.el.addEventListener("materialtextureloaded", function(e)
 		{
 			var w = e.detail.texture.image.videoWidth || e.detail.texture.image.width;
@@ -31,17 +32,16 @@ AFRAME.registerComponent('fit-image',{
 
 			self.applyTransformation();
 		});
-  	},
+	},
 
-  	applyTransformation: function () {
-	    var el = this.el;
-	    var geometry = el.getAttribute('geometry');
-	    var widthHeightRatio = this.dimensions.h / this.dimensions.w;
+	applyTransformation: function () 
+	{
+		var el = this.el;
+		var geometry = el.getAttribute('geometry');
+		var widthHeightRatio = this.dimensions.h / this.dimensions.w;
 
-	    console.log("dimensions", this.dimensions);
-
-	    el.setAttribute("width", this.targetWidth);
-	    el.setAttribute('height', this.targetWidth * widthHeightRatio);
-
+		el.setAttribute("width", this.targetWidth);
+		el.setAttribute('height', this.targetWidth * widthHeightRatio);
+		el.emit("resized");
 	},
 });

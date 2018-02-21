@@ -7,6 +7,11 @@
 	</head>
 	<body>
 		<a-scene raycaster="far: 100; objects: [link];" cursor="rayOrigin: mouse">
+			<!-- The wrapper entity is temp. I just put it there to help jerome with something -->
+			<a-entity wasd-controls look-controls position="0 0 10">
+				<a-camera look-controls="enabled:false" wasd-controls="enabled:false"></a-camera>
+			</a-entity>
+
 			<a-assets>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
     			<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
