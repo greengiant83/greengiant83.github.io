@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<!--<script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>-->
+		<!--<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>-->
 		<!--<script src="http://localhost:9000/dist/aframe-master.js"></script>-->
 		<script src="lib/aframe.js"></script>
 		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
@@ -9,7 +9,7 @@
 		<script src="index.js"></script>
 	</head>
 	<body>
-		<a-scene raycaster="far: 100; objects: .button,#sequencer;" cursor="rayOrigin: mouse">
+		<a-scene raycaster="far: 100; objects: .interactive;" cursor="rayOrigin: mouse">
 			<a-assets>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
 				<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
@@ -21,11 +21,23 @@
 				<a-entity position="-2 3 -1"><ta-box scale="0.2 0.2 0.1"></ta-box></a-entity>
 			</a-entity>
 
+			
+			<a-entity position="0.5 1 -2" path-node id="outerOrigin">
+				<a-box id="outer" position="0 0 0" scale="0.4 0.4 0.4" color="white" grabbable="origin: #outerOrigin"></a-box>
+				<a-entity position="0 0 0.2">
+					<a-box scale="0.2 0.2 0.01" color="yellow"></a-box>
+					<a-box scale="0.2 0.2 0.2" position="0 0 0.5" color="red" grabbable></a-box>
+				</a-entity>
+				
+			</a-entity>
+
 			<!-- - - - - - - - -->
+			
+
 			<a-entity id="player" wasd-controls="">
 				<a-camera wasd-controls-enabled="false"></a-camera>
-				<a-entity id="leftHand" teleport-controls="cameraRig: #player" laser-controls="hand: left" raycaster="far:100; objects:.button"></a-entity>
-				<a-entity id="rightHand" teleport-controls="cameraRig: #player" laser-controls="hand: right" raycaster="far:100; objects:.button"></a-entity>
+				<a-entity id="leftHand" teleport-controls="cameraRig: #player" laser-controls="hand: left" raycaster="far:100; objects:.interactive"></a-entity>
+				<a-entity id="rightHand" teleport-controls="cameraRig: #player" laser-controls="hand: right" raycaster="far:100; objects:.interactive"></a-entity>
 			</a-entity>
 								
 			<a-entity id="background">	      		

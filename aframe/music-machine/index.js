@@ -1,72 +1,63 @@
-(function()
+AFRAME.registerComponent("path-node", {
+	init: function()
+	{
+		var self = this;
+		/*self.el.addEventListener("loaded", function()
+		{
+			if(self.el.components.grabbable == undefined)
+			{
+				console.log("need to add grabbable");
+				self.el.setAttribute("grabbable", true);
+			}
+		});*/
+	}
+});
+
+AFRAME.registerComponent("grabbable", {
+	schema: {
+		origin: { type: "selector" }
+	},
+
+	init: function()
+	{
+		var self = this;
+		var isDragging = false;
+		var originalParent;
+		var originEl = this.data.origin || this.el;
+
+		self.el.classList.add("interactive");
+
+		self.el.addEventListener("mousedown", function(e)
+		{
+			e.cancelBubble = true;
+			isDragging = true;
+			originalParent = originEl.object3D.parent;
+
+			var cursor = e.detail.cursorEl;
+			if(cursor == self.el.sceneEl) cursor = document.querySelector("[camera]"); //This handles the scenario where the user is using a old fashioned mouse in the 2d browser window
+			
+			reparentObject3D(originEl.object3D, cursor.object3D);
+			
+			self.el.emit("grabStart", e);
+		});
+
+		self.el.addEventListener("mouseup", function(e)
+		{
+			if(isDragging)
+			{
+				reparentObject3D(originEl.object3D, originalParent);
+				isDragging = false;
+				originalParent = null;
+
+				self.el.emit("grabEnd", e);
+			}
+		})
+	}
+})
+
+function reparentObject3D(subject, newParent)
 {
-	AFRAME.registerComponent("curve", {
-		init: function()
-		{
-			
-			this.createBezierChain(toList(this.el.children));
-			this.drawChain();
-		},
-
-		createBezierChain(elements)
-		{
-			this.bezierChain = new BezierChain();
-			for(var i=1;i<elements.length;i++)
-			{
-				this.bezierChain.addSegment(this.getSegment(elements[i-1], elements[i]));
-			}
-		},
-
-		drawChain: function()
-		{
-			var radius = 0.1;
-			var points = this.bezierChain.getUniformPoints(radius*2);
-			for(var i=0;i<points.length;i++)
-			{
-				this.addDot(points[i], radius);
-			}
-		},
-
-		getSegment: function(elA, elB, chain)
-		{
-			var pt0 = toVector(elA.getAttribute("position"));
-			var pt1 = toVector(elB.getAttribute("position"));
-			var distance = pt1.clone().sub(pt0).length() * 1;
-			var forward = new THREE.Vector3(0, 0, distance);
-			var back = new THREE.Vector3(0, 0, -distance);
-			//var forward = new THREE.Vector3(0, distance, 0);
-			//var back = new THREE.Vector3(0, -distance, 0);
-
-			elA.object3D.updateMatrix();
-			elB.object3D.updateMatrix();
-			forward.applyMatrix4(elA.object3D.matrix);
-			back.applyMatrix4(elB.object3D.matrix);
-			
-			return new BezierSegment(pt0, forward, back, pt1);
-		},	
-
-		addDot: function(position, radius)
-		{
-				var dot = document.createElement("a-sphere");
-				dot.setAttribute("radius", radius);
-				dot.setAttribute("position", position);
-				dot.setAttribute("color", "yellow");
-				this.el.appendChild(dot);
-		},			
-	});
-
-	function toVector(o)
-	{
-		return new THREE.Vector3(o.x, o.y, o.z);
-	}
-
-	function toList(collection)
-	{
-		var list = [];
-		for(var i=0;i<collection.length;i++)
-		{
-			list.push(collection[i]);
-		}
-		return list;
-	}
-})();
+	subject.matrix.copy(subject.matrixWorld);
+	subject.applyMatrix(new THREE.Matrix4().getInverse(newParent.matrixWorld));
+	newParent.add(subject);
+}
