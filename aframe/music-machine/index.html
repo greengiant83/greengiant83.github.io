@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+		<!--<script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>-->
+
 		<!--<script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>-->
 		<!--<script src="http://localhost:9000/dist/aframe-master.js"></script>-->
 		<script src="lib/aframe.js"></script>
+		<script src="https://unpkg.com/aframe-template-component@^3.2.1/dist/aframe-template-component.min.js"></script>
 		<script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
-		<script src="bezier.js"></script>
+		<script src="lib/knockout-3.4.2.js"></script>
+		<script src="util.js"></script>
+		<script src="grabbable.js"></script>
+		<script src="node-link.js"></script>
 		<script src="index.js"></script>
 	</head>
 	<body>
@@ -13,23 +20,37 @@
 			<a-assets>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
 				<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
+
+				<script id="boxesTemplate" type="text/html">
+		      <a-box color="${box1color}" position="-1 0 -5"></a-box>
+		      <a-box color="${box2color}" position="0 1 -5"></a-box>
+		      <a-box color="${box3color}" position="1 0 -5"></a-box>
+		    </script> 
+
+		    <script id="nodeTemplate" type="text/html">
+		    	<a-entity position="0.5 1 -2" path-node id="outerOrigin">
+						<a-box id="outer" position="0 0 0" scale="0.4 0.4 0.4" color="white" grabbable="origin: #outerOrigin"></a-box>
+						<a-entity position="0 0 0.2">
+							<a-box scale="0.2 0.2 0.01" id="yellowBox" color="yellow"></a-box>
+							<a-box scale="0.2 0.2 0.2" position="1 0 0.5" id="redBox" color="red" grabbable></a-box>
+						</a-entity>
+					</a-entity>
+		    </script>
 			</a-assets>
 
-			<a-entity curve>
-				<a-entity position="2 1 -3" rotation="0 0 0"><ta-box scale="0.2 0.2 0.1"></ta-box></a-entity>
-				<a-entity position="2 2 -2"><ta-box scale="0.2 0.2 0.1"></ta-box></a-entity>
-				<a-entity position="-2 3 -1"><ta-box scale="0.2 0.2 0.1"></ta-box></a-entity>
-			</a-entity>
-
 			
-			<a-entity position="0.5 1 -2" path-node id="outerOrigin">
+
+			<!--<a-entity position="0.5 1 -2" path-node id="outerOrigin">
 				<a-box id="outer" position="0 0 0" scale="0.4 0.4 0.4" color="white" grabbable="origin: #outerOrigin"></a-box>
 				<a-entity position="0 0 0.2">
-					<a-box scale="0.2 0.2 0.01" color="yellow"></a-box>
-					<a-box scale="0.2 0.2 0.2" position="0 0 0.5" color="red" grabbable></a-box>
+					<a-box scale="0.2 0.2 0.01" id="yellowBox" color="yellow"></a-box>
+					<a-box scale="0.2 0.2 0.2" position="1 0 0.5" id="redBox" color="red" grabbable></a-box>
 				</a-entity>
-				
-			</a-entity>
+			</a-entity>-->
+
+			<!--<a-entity node-link="firstNode: #yellowBox; secondNode: #redBox"></a-entity>-->
+			<!--<a-entity template="src: #nodeTemplate"></a-entity>-->
+			
 
 			<!-- - - - - - - - -->
 			
@@ -46,6 +67,7 @@
 				<a-light type="ambient" color="#445451"></a-light>
 				<a-entity light="type:directional; castShadow:true;" position="-1 1 1"></a-entity>
 			</a-entity>
+			
 		</a-scene>
 
 		<!-- GitHub Corner. -->

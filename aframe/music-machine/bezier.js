@@ -6,7 +6,6 @@
 	AFRAME.registerComponent("curve", {
 		init: function()
 		{
-			
 			this.createBezierChain(toList(this.el.children));
 			this.drawChain();
 		},
@@ -65,22 +64,9 @@
 				this.el.appendChild(dot);
 		},			
 	});
-
-	function toVector(o)
-	{
-		return new THREE.Vector3(o.x, o.y, o.z);
-	}
-
-	function toList(collection)
-	{
-		var list = [];
-		for(var i=0;i<collection.length;i++)
-		{
-			list.push(collection[i]);
-		}
-		return list;
-	}
 })();
+
+//////////////////////////////
 
 function BezierChain(segments)
 {

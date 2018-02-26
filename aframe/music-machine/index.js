@@ -1,3 +1,51 @@
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyBUkR7JAuLIZbTzZhFEJXV4B-WpRb8GR2A",
+	authDomain: "music-machine-fa546.firebaseapp.com",
+	databaseURL: "https://music-machine-fa546.firebaseio.com",
+	projectId: "music-machine-fa546",
+	storageBucket: "music-machine-fa546.appspot.com",
+	messagingSenderId: "281401274515"
+};
+firebase.initializeApp(config);
+var db = firebase.database();
+var compRef;
+var nodesRef;
+
+firebase.auth().signInAnonymously();
+
+db.ref("compositions").limitToFirst(1).once("child_added", function(snap)
+{
+	console.log("Comp ", snap.key, snap.val());
+	compRef = snap.ref;
+	nodesRef = compRef.child("nodes");
+	nodesRef.on("child_added", function(snap)
+	{
+		console.log("node", snap.val());
+		var template = document.getElementById("nodeTemplate").innerHTML;
+		console.log(template);
+	});
+
+	nodesRef.on("value", function(snap)
+	{
+		console.log("Nodes value", snap.val());
+	})
+})
+
+function addComp(title)
+{
+	var newComp = comps.push();
+	newComp.set({
+		title: title || "New Comp"
+	});
+}
+
+function addNode()
+{
+	var newNode = nodesRef.push();
+	newNode.set({ position: {x: Math.random() * 2, y: Math.random() * 2, z: Math.random() * -1 - 1 }});
+}
+
 AFRAME.registerComponent("path-node", {
 	init: function()
 	{
@@ -12,52 +60,3 @@ AFRAME.registerComponent("path-node", {
 		});*/
 	}
 });
-
-AFRAME.registerComponent("grabbable", {
-	schema: {
-		origin: { type: "selector" }
-	},
-
-	init: function()
-	{
-		var self = this;
-		var isDragging = false;
-		var originalParent;
-		var originEl = this.data.origin || this.el;
-
-		self.el.classList.add("interactive");
-
-		self.el.addEventListener("mousedown", function(e)
-		{
-			e.cancelBubble = true;
-			isDragging = true;
-			originalParent = originEl.object3D.parent;
-
-			var cursor = e.detail.cursorEl;
-			if(cursor == self.el.sceneEl) cursor = document.querySelector("[camera]"); //This handles the scenario where the user is using a old fashioned mouse in the 2d browser window
-			
-			reparentObject3D(originEl.object3D, cursor.object3D);
-			
-			self.el.emit("grabStart", e);
-		});
-
-		self.el.addEventListener("mouseup", function(e)
-		{
-			if(isDragging)
-			{
-				reparentObject3D(originEl.object3D, originalParent);
-				isDragging = false;
-				originalParent = null;
-
-				self.el.emit("grabEnd", e);
-			}
-		})
-	}
-})
-
-function reparentObject3D(subject, newParent)
-{
-	subject.matrix.copy(subject.matrixWorld);
-	subject.applyMatrix(new THREE.Matrix4().getInverse(newParent.matrixWorld));
-	newParent.add(subject);
-}
