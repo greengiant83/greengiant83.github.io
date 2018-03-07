@@ -1,4 +1,3 @@
-
 AFRAME.registerComponent("grabbable", {
 	schema: {
 		origin: { type: "selector" }
@@ -8,8 +7,8 @@ AFRAME.registerComponent("grabbable", {
 	{
 		var self = this;
 		var isDragging = false;
-		var originalParent;
-		var originEl = this.data.origin || this.el;
+		self.originEl = this.data.origin || this.el;
+		self.proxyObject = null;
 
 		self.el.classList.add("interactive");
 
@@ -19,28 +18,50 @@ AFRAME.registerComponent("grabbable", {
 			if(isDragging) return;
 			
 			isDragging = true;
-			originalParent = originEl.object3D.parent;
 
 			var cursor = e.detail.cursorEl;
-			if(cursor == self.el.sceneEl) cursor = document.querySelector("[camera]"); //This handles the scenario where the user is using a old fashioned mouse in the 2d browser window
+			if(cursor == self.el.sceneEl) cursor = document.querySelector("[camera]"); //This handles the scenario where the user isn't using motion controllers
+
+			createProxyObject(cursor.object3D);
 			
-			reparentObject3D(originEl.object3D, cursor.object3D);
-			
-			self.el.emit("grabStart", e);
-			self.el.addState("moving");
+			self.originEl.emit("grabStart", e);
+			self.originEl.addState("moving");
 		});
 
 		self.el.addEventListener("mouseup", function(e)
 		{
 			if(isDragging)
 			{
-				reparentObject3D(originEl.object3D, originalParent);
 				isDragging = false;
-				originalParent = null;
 
-				self.el.emit("grabEnd", e);
-				self.el.removeState("moving");
+				if(self.proxyObject)
+				{
+					self.proxyObject.parent.remove(self.proxyObject);
+					self.proxyObject = null;
+				}
+
+				self.originEl.emit("grabEnd", e);
+				self.originEl.removeState("moving");
 			}
-		})
+		});
+
+		function createProxyObject(cursorObject)
+		{
+			//var geometry = new THREE.BoxGeometry(1, 1, 1);
+			//var material = new THREE.MeshBasicMaterial({color: 0xffff00});
+			//self.proxyObject = new THREE.Mesh(geometry, material);
+			self.proxyObject = new THREE.Object3D();
+			cursorObject.add(self.proxyObject);
+			copyTransform(self.originEl.object3D, self.proxyObject);				
+		}
+	},
+
+	tick: function()
+	{
+		var self = this;
+		if(self.proxyObject)
+		{
+			copyTransform(self.proxyObject, self.originEl.object3D);
+		}
 	}
 })

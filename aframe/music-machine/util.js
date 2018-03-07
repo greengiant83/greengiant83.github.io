@@ -1,9 +1,22 @@
 function reparentObject3D(subject, newParent)
 {
+	subject.updateMatrixWorld();
 	subject.matrix.copy(subject.matrixWorld);
 	subject.applyMatrix(new THREE.Matrix4().getInverse(newParent.matrixWorld));
 	newParent.add(subject);
 }
+
+
+// Copys the world transforms between objects even if the have different parents
+var copyTransform = (function()
+{
+	var scratchMat = new THREE.Matrix4();
+	return function(source, destination)
+	{
+		destination.matrix.copy(source.matrixWorld);
+		destination.applyMatrix(scratchMat.getInverse(destination.parent.matrixWorld));		
+	}
+})();
 
 function toVector(o)
 {
