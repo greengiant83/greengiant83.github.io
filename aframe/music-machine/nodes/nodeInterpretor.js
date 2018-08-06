@@ -1,0 +1,8 @@
+
+/*class NodeInterpretor
+{
+	constructor(graphRef)
+	{
+
+	}
+}*/

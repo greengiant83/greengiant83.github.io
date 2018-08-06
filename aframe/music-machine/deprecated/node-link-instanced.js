@@ -1,3 +1,5 @@
+console.error("this is no longer used");
+
 AFRAME.registerComponent("node-link", {
 	init: function()
 	{
@@ -32,10 +34,29 @@ AFRAME.registerComponent("node-link", {
 	createGeometry: function()
 	{
 		this.curve = new THREE.CubicBezierCurve3();
-		this.material = new THREE.LineBasicMaterial({ color:0xff0000ff, linewidth:10 });
-		this.geometry = new THREE.Geometry();
-		this.line = new THREE.Line(this.geometry, this.material);
-		this.el.object3D.add(this.line);		
+		//this.material = new THREE.LineBasicMaterial({ color:0xff0000ff, linewidth:10 });
+		//this.geometry = new THREE.Geometry();
+		//this.line = new THREE.Line(this.geometry, this.material);
+		//this.el.object3D.add(this.line);	
+
+		var sourceGeometry = new THREE.BoxBufferGeometry(.1, .1, .1);
+
+		this.geometry = new THREE.InstancedBufferGeometry();
+		this.geometry.index = sourceGeometry.index;
+		this.geometry.attributes.position = sourceGeometry.attributes.position;
+		this.geometry.attributes.uv = sourceGeometry.attributes.uv;
+
+		this.offsetAttribute = new THREE.InstancedBufferAttribute(new Float32Array([]), 3);
+		this.geometry.addAttribute("offset", this.offsetAttribute);
+
+		var material = new THREE.RawShaderMaterial({
+			vertexShader: document.getElementById( 'vertexShader' ).textContent,
+			fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+		});
+
+		this.mesh = new THREE.Mesh(this.geometry, material);
+		this.el.object3D.add(this.mesh);
+
 	},
 
 	isUpdateNeeded: function()
@@ -75,13 +96,17 @@ AFRAME.registerComponent("node-link", {
 
 	updateGeometry: function()
 	{
-		var points = this.curve.getSpacedPoints(50); //.bezierChain.getUniformPoints(radius*2);
+		/*var points = this.curve.getSpacedPoints(50); //.bezierChain.getUniformPoints(radius*2);
 		this.geometry.vertices.length = 0;
 		for(var i=0;i<points.length;i++)
 		{
 			this.geometry.vertices.push(points[i]);
 		}
-		this.geometry.verticesNeedUpdate = true;
+		this.geometry.verticesNeedUpdate = true;*/
+
+		var points = this.curve.getSpacedPoints(50); //.bezierChain.getUniformPoints(radius*2);
+		this.offsetAttribute = new THREE.InstancedBufferAttribute(new Float32Array(points), 3);
+		this.geometry.addAttribute("offset", this.offsetAttribute);
 	},
 
 	showControlPoints: function()

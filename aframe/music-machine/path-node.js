@@ -33,6 +33,7 @@ AFRAME.registerComponent("path-node", {
 		self.el.addEventListener("grabEnd", function(e)
 		{
 			clearInterval(self.timer);
+			self.timer = null;
 			self.uploadTransform();
 		})
 	},

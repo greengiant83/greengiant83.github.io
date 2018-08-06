@@ -40,6 +40,9 @@ AFRAME.registerComponent("grabbable", {
 					self.proxyObject = null;
 				}
 
+				self.originEl.setAttribute("position", self.originEl.getAttribute("position")); //seems pointless, but will force the event system to notify subscribers
+				self.originEl.setAttribute("rotation", self.originEl.getAttribute("rotation")); //seems pointless, but will force the event system to notify subscribers
+
 				self.originEl.emit("grabEnd", e);
 				self.originEl.removeState("moving");
 			}
@@ -47,9 +50,6 @@ AFRAME.registerComponent("grabbable", {
 
 		function createProxyObject(cursorObject)
 		{
-			//var geometry = new THREE.BoxGeometry(1, 1, 1);
-			//var material = new THREE.MeshBasicMaterial({color: 0xffff00});
-			//self.proxyObject = new THREE.Mesh(geometry, material);
 			self.proxyObject = new THREE.Object3D();
 			cursorObject.add(self.proxyObject);
 			copyTransform(self.originEl.object3D, self.proxyObject);				
@@ -62,6 +62,8 @@ AFRAME.registerComponent("grabbable", {
 		if(self.proxyObject)
 		{
 			copyTransform(self.proxyObject, self.originEl.object3D);
+			self.originEl.setAttribute("position", self.originEl.getAttribute("position")); //seems pointless, but will force the event system to notify subscribers
+				self.originEl.setAttribute("rotation", self.originEl.getAttribute("rotation")); //seems pointless, but will force the event system to notify subscribers
 		}
 	}
 })

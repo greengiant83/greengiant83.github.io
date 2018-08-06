@@ -14,62 +14,18 @@
 		<script src="util/util.js"></script>
 		<script src="util/observable.js"></script>
 		<script src="grabbable.js"></script>
-		<script src="node-link.js"></script>
-		<script src="path-node.js"></script>
-		<script src="nodes/editor/nodeEditor.js"></script>
 		<script src="nodes/nodeInterpretor.js"></script>
-		<script src="nodes/myNodeProvider.js"></script>
-		<script src="index.js"></script>
-		<script src="comp-manager.js"></script>
-		<script src="util/fire-bindings.js"></script>
+		<script src="nodes/dataNodes.js"></script>
+		<script src="data.js"></script>
 	</head>
 	<body>
-		<!--<script id="nodeTemplate" type="text/x-handlebars-template">
-			<a-box scale="0.4 0.4 0.4" color="white" grabbable="origin: #{{ key }}"></a-box>
-			<a-entity position="0 0 0.2" rotation="0 0 0" class="connector1">
-				<a-box scale="0.2 0.2 0.01" color="red"></a-box>
-			</a-entity>
-
-			<a-entity position="0.2 0 0" rotation="0 90 0" class="connector2">
-				<a-box scale="0.2 0.2 0.01" color="yellow"></a-box>
-			</a-entity>
-
-			<a-entity position="0 0 -0.2" rotation="0 180 0" class="connector3">
-				<a-box scale="0.2 0.2 0.01" color="green"></a-box>
-			</a-entity>
-
-			<a-entity position="-0.2 0 0" rotation="0 270 0" class="connector4">
-				<a-box scale="0.2 0.2 0.01" color="blue"></a-box>
-			</a-entity>
-		</script>
-
-		<script id="linkTemplate" type="text/x-handlebars-template">
-		</script>-->
-
 		<a-scene raycaster="far: 100; objects: .interactive;" cursor="rayOrigin: mouse">
 			<a-assets>
 				<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg" crossorigin="anonymous">
 				<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg" crossorigin="anonymous">
 			</a-assets>
 
-			<a-entity fire-item="refPath: /appGraph" id="appGraph">
-				<a-entity id="editorNodes" fire-list="refPath: nodes">
-					<a-box grabbable fire-transform="refPath: data/transform">
-						<a-sphere radius="0.6"></a-sphere>
-					</a-box>
-				</a-entity>
-
-				<a-entity id="editorPatches" fire-list="refPath: pathes">
-					<a-entity editor-patch></a-entity>
-				</a-entity>
-			</a-entity>
-
-			<!--<a-entity comp-manager></a-entity>
-			<a-entity firebase-list="template: #nodeTemplate; refPath: nodes; componentName: path-node"></a-entity>
-			<a-entity firebase-list="template: #linkTemplate; refPath: links; componentName: node-link"></a-entity>-->
-
 			<!-- - - - - - - - -->
-			
 
 			<a-entity id="player" wasd-controls="">
 				<a-camera wasd-controls-enabled="false" position="0 1.6 0"></a-camera>
@@ -83,7 +39,6 @@
 				<a-light type="ambient" color="#445451"></a-light>
 				<a-entity light="type:directional; castShadow:true;" position="-1 1 1"></a-entity>
 			</a-entity>
-			
 		</a-scene>
 
 		<!-- GitHub Corner. -->

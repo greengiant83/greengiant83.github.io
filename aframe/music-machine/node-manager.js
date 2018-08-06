@@ -2,7 +2,7 @@ AFRAME.registerComponent("node-manager", {
 	init: function()
 	{
 		var self = this;
-		var compManager = document.querySelector("[comp-manager]").components["comp-manager"];
+		var compManager = findComponent("comp-manager");
 
 		self.template = Handlebars.compile(document.getElementById("nodeTemplate").innerHTML);
 		self.nodesRef = null;
@@ -49,9 +49,3 @@ AFRAME.registerComponent("node-manager", {
 	}
 });
 
-function addNode()
-{
-	var nodeManager = document.querySelector("[node-manager]").components["node-manager"];	
-	var newNode = nodeManager.nodesRef.push();
-	newNode.set({ position: {x: Math.random() * 2, y: Math.random() * 2, z: Math.random() * -1 - 1 }});
-}

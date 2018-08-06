@@ -1,3 +1,9 @@
+function findComponent(componentName)
+{
+	return document.querySelector(`[${componentName}]`).components[componentName];
+}
+
+//Moves the subject to a new parent while preserving its transform in the world
 function reparentObject3D(subject, newParent)
 {
 	subject.updateMatrixWorld();
@@ -14,7 +20,7 @@ var copyTransform = (function()
 	return function(source, destination)
 	{
 		destination.matrix.copy(source.matrixWorld);
-		destination.applyMatrix(scratchMat.getInverse(destination.parent.matrixWorld));		
+		destination.applyMatrix(scratchMat.getInverse(destination.parent.matrixWorld));
 	}
 })();
 

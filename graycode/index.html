@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+	</head>
+	<body>
+		<svg width="1000" height="1000" style="background:gray" xmlns="http://www.w3.org/2000/svg">
+		  <!--<path d="M100 0
+		           A 100 100 0 0 1 200, 100"
+		           stroke="black" fill="none" stroke-width="30"/>-->
+		</svg>	
+		<button onclick="download('test.svg')">Download</button>
+
+		<script>
+			var svgCanvas = document.querySelector("svg");
+			var center = { x: 500, y: 500 };
+			var thickness = 50;
+			var overlap = 5;
+			var ringCount = 9;
+			var divisions = 2;
+			var radius = 50;
+
+			for(var i=0;i<ringCount;i++)
+			{
+				createRing(center, divisions, radius, thickness);
+				divisions *= 2;
+				radius += thickness - overlap;
+			}			
+
+			function createRing(center, divisions, radius, thickness)
+			{
+				var spread = (Math.PI * 2) / divisions;
+				var angle = spread / 2;
+				var offset = spread / 2;
+				for(var i=0;i<divisions;i+=2)
+				{
+					angle = i * spread + offset;
+					createArc(center, radius, angle, angle + spread, thickness);
+				}
+			}
+
+			function createArc(center, radius, startAngle, endAngle, thickness)
+			{
+				var startPoint = getPolarPoint(center, radius, startAngle);
+				var endPoint = getPolarPoint(center, radius, endAngle)
+				var arcEl = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+				var d = `M${startPoint.x} ${startPoint.y} `;
+				d += `A ${radius} ${radius} 0 0 1 ${endPoint.x} ${endPoint.y}`;
+
+				//addDot(center, radius, "red");
+				//addDot(endPoint, 10, "white");
+				//addDot(startPoint, 5, "#333333");
+
+				arcEl.setAttribute("d",d);
+				arcEl.style.stroke = "#000";
+				arcEl.style.strokeWidth = thickness + "px";
+				arcEl.style.fill = "none";
+				svgCanvas.appendChild(arcEl);
+			}
+
+			function getPolarPoint(center, radius, angle)
+			{
+				var x = Math.cos(angle) * radius + center.x;
+				var y = Math.sin(angle) * radius + center.y;
+				return { x: x, y: y };
+			}
+
+			function addDot(center, radius, fillColor)
+			{
+				var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				newElement.setAttribute("cx",center.x);
+				newElement.setAttribute("cy",center.y);
+				newElement.setAttribute("r",radius);
+				newElement.setAttribute("fill",fillColor);
+				svgCanvas.appendChild(newElement);				
+			}
+
+			function download(filename)
+			{
+				//Create a temp svgElement that has the proper width and height instead of the smaller viewport settings
+				var svgElement = document.createElement("svg");
+				//svgElement.setAttribute("width", viewModel.board.width + "in");
+				//svgElement.setAttribute("height", viewModel.board.height + "in");
+				//svgElement.setAttribute("viewBox", "0 0 " + viewModel.board.width + " " + viewModel.board.height);
+				svgElement.innerHTML = svgCanvas.innerHTML;
+				//var svgElement = svgCanvas;
+
+				var svgData = svgElement.outerHTML.replace("viewbox", "viewBox");
+				var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+				var svgUrl = URL.createObjectURL(svgBlob);
+				var downloadLink = document.createElement("a");
+				downloadLink.href = svgUrl;
+				downloadLink.download = filename;
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		</script>
+	</body>
+</html>
