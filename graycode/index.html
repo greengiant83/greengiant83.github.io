@@ -3,28 +3,69 @@
 	<head>
 	</head>
 	<body>
-		<svg width="1000" height="1000" style="background:gray" xmlns="http://www.w3.org/2000/svg">
-		  <!--<path d="M100 0
-		           A 100 100 0 0 1 200, 100"
-		           stroke="black" fill="none" stroke-width="30"/>-->
+		<h1>Gray Code Encoder Generator</h1>
+		<svg width="1000" height="1000" style="background:white;border:2px solid black" xmlns="http://www.w3.org/2000/svg">
 		</svg>	
-		<button onclick="download('test.svg')">Download</button>
+
+		<div>
+			<table>
+				<tr>
+					<td><label for="rings">Rings</label></td>
+					<td>
+						<input id="rings" value="7" onchange="generate()" />
+						<button onclick="adjust('#rings', 1)">+</button>
+						<button onclick="adjust('#rings', -1)">-</button>
+					</td>
+					<td>(Be careful with values over 10)</td>
+				</tr>
+
+				<tr>
+					<td><label for="overlap">Overlap</label></td>
+					<td>
+						<input id="overlap" value="10" onchange="generate()" />
+						<button onclick="adjust('#overlap', 2)">+</button>
+						<button onclick="adjust('#overlap', -2)">-</button>
+					</td>
+				</tr>
+			</table>
+			<button onclick="generate()">Generate</button>
+			<button onclick="download('test.svg')">Download SVG</button>
+		</div>
+
+		<p>
+			I ran across optical encoders that utilize Gray Code to encode absolute position while looking at servos and stepper motors. Its one of those nice little things where both the theory and visuals are cool. I needed some vector versions of the encoder for a project so I wrote this little page to generate them (I should note that I wanted it for visual purposes, so I haven't actually verified that its legit encoding). Give me a shout on twitter if you should happen to find it useful: @<a href="https://twitter.com/GreenGiant83">greengiant83</a>
+		</p>
+
+		<p>
+			You can find out more about it on Wikipedia: <a href="https://en.wikipedia.org/wiki/Gray_code#Position_encoders">Gray Code</a><br/>
+			Source: <a href="https://github.com/greengiant83/greengiant83.github.io/tree/master/graycode">Github</a>
+		</p>
+
 
 		<script>
 			var svgCanvas = document.querySelector("svg");
-			var center = { x: 500, y: 500 };
-			var thickness = 50;
-			var overlap = 5;
-			var ringCount = 9;
-			var divisions = 2;
-			var radius = 50;
 
-			for(var i=0;i<ringCount;i++)
+			generate();
+
+			function generate()
 			{
-				createRing(center, divisions, radius, thickness);
-				divisions *= 2;
-				radius += thickness - overlap;
-			}			
+				svgCanvas.innerHTML = "";
+
+				var ringCount = document.querySelector("#rings").value*1;
+				var overlap = document.querySelector("#overlap").value*1;
+				var diameter = 800;
+				var center = { x: 500, y: 500 };
+				var thickness = diameter / 2 / ringCount + overlap;
+				var radius = thickness / 2;
+				var divisions = 2;
+
+				for(var i=0;i<ringCount;i++)
+				{
+					createRing(center, divisions, radius, thickness);
+					divisions *= 2;
+					radius += thickness - overlap;
+				}			
+			}
 
 			function createRing(center, divisions, radius, thickness)
 			{
@@ -46,10 +87,6 @@
 				var d = `M${startPoint.x} ${startPoint.y} `;
 				d += `A ${radius} ${radius} 0 0 1 ${endPoint.x} ${endPoint.y}`;
 
-				//addDot(center, radius, "red");
-				//addDot(endPoint, 10, "white");
-				//addDot(startPoint, 5, "#333333");
-
 				arcEl.setAttribute("d",d);
 				arcEl.style.stroke = "#000";
 				arcEl.style.strokeWidth = thickness + "px";
@@ -64,14 +101,13 @@
 				return { x: x, y: y };
 			}
 
-			function addDot(center, radius, fillColor)
+			function adjust(el, amount)
 			{
-				var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-				newElement.setAttribute("cx",center.x);
-				newElement.setAttribute("cy",center.y);
-				newElement.setAttribute("r",radius);
-				newElement.setAttribute("fill",fillColor);
-				svgCanvas.appendChild(newElement);				
+				var input = document.querySelector(el);
+				var newValue = input.value * 1 + amount;
+				if(newValue < 0) newValue = 0;
+				input.value = newValue;
+				generate();
 			}
 
 			function download(filename)
