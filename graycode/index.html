@@ -4,7 +4,7 @@
 	</head>
 	<body>
 		<h1>Gray Code Encoder Generator</h1>
-		<svg width="1000" height="1000" style="background:white;border:2px solid black" xmlns="http://www.w3.org/2000/svg">
+		<svg width="600" height="600" style="background:white;border:2px solid black" xmlns="http://www.w3.org/2000/svg">
 		</svg>	
 
 		<div>
@@ -12,9 +12,9 @@
 				<tr>
 					<td><label for="rings">Rings</label></td>
 					<td>
-						<input id="rings" value="7" onchange="generate()" />
-						<button onclick="adjust('#rings', 1)">+</button>
+						<input id="rings" value="4" onchange="generate()" />
 						<button onclick="adjust('#rings', -1)">-</button>
+						<button onclick="adjust('#rings', 1)">+</button>
 					</td>
 					<td>(Be careful with values over 10)</td>
 				</tr>
@@ -23,8 +23,8 @@
 					<td><label for="overlap">Overlap</label></td>
 					<td>
 						<input id="overlap" value="10" onchange="generate()" />
-						<button onclick="adjust('#overlap', 2)">+</button>
 						<button onclick="adjust('#overlap', -2)">-</button>
+						<button onclick="adjust('#overlap', 2)">+</button>
 					</td>
 				</tr>
 			</table>
@@ -33,7 +33,7 @@
 		</div>
 
 		<p>
-			I ran across optical encoders that utilize Gray Code to encode absolute position while looking at servos and stepper motors. Its one of those nice little things where both the theory and visuals are cool. I needed some vector versions of the encoder for a project so I wrote this little page to generate them (I should note that I wanted it for visual purposes, so I haven't actually verified that its legit encoding). Give me a shout on twitter if you should happen to find it useful: @<a href="https://twitter.com/GreenGiant83">greengiant83</a>
+			I ran across optical encoders that utilize Gray Code to encode absolute position while looking at servos and stepper motors. Its one of those nice little things where both the theory and visuals are cool. I needed some vector versions of the encoder for a project so I wrote this little page to generate them. Give me a shout on twitter if you should happen to find it useful: @<a href="https://twitter.com/GreenGiant83">greengiant83</a>
 		</p>
 
 		<p>
@@ -44,6 +44,7 @@
 
 		<script>
 			var svgCanvas = document.querySelector("svg");
+			var offset = Math.PI / 2; //45 degrees
 
 			generate();
 
@@ -51,55 +52,91 @@
 			{
 				svgCanvas.innerHTML = "";
 
-				var ringCount = document.querySelector("#rings").value*1;
+				var ringCount = document.querySelector("#rings").value*1;				
 				var overlap = document.querySelector("#overlap").value*1;
-				var diameter = 800;
-				var center = { x: 500, y: 500 };
-				var thickness = diameter / 2 / ringCount + overlap;
-				var radius = thickness / 2;
-				var divisions = 2;
+				var diameter = 500;
+				var maxValue = Math.pow(2, ringCount);
+				var stepSize = Math.PI * 2 / (maxValue);
+				var center = { x: 300, y: 300 };
+				var thickness = diameter / 2 / ringCount;
+				var halfSlice = stepSize / 2;
+				var startIndices = new Array(ringCount);
 
-				for(var i=0;i<ringCount;i++)
-				{
-					createRing(center, divisions, radius, thickness);
-					divisions *= 2;
-					radius += thickness - overlap;
-				}			
-			}
+				offset = Math.PI / 2 - halfSlice; //45 degrees + half a slice to make it line up pretty
 
-			function createRing(center, divisions, radius, thickness)
-			{
-				var spread = (Math.PI * 2) / divisions;
-				var angle = spread / 2;
-				var offset = spread / 2;
-				for(var i=0;i<divisions;i+=2)
+				for(var i=0;i<maxValue;i++)
 				{
-					angle = i * spread + offset;
-					createArc(center, radius, angle, angle + spread, thickness);
+					var angle = stepSize * i;
+					var code = getBinaryToGray(i);
+
+					for(var r=0;r<ringCount;r++)
+					{
+						var radius = thickness * (r+1);
+						var isOn = testBit(code, ringCount - 1 - r);
+						var isLastOne = (i == maxValue-1);
+
+						if(isOn && startIndices[r] == null) //is on but was off
+						{
+							startIndices[r] = i;
+						}
+						if((!isOn && startIndices[r] != null) || (isOn && isLastOne)) //is off but was on OR we are on but its the last one
+						{
+							var endIndex = (isOn && isLastOne) ? i : i - 1;
+							var startIndex = startIndices[r];
+
+							var startAngle = stepSize * startIndex - halfSlice;
+							var endAngle = stepSize * endIndex + halfSlice;
+							createArc(center, radius, startAngle, endAngle, thickness + overlap);
+							startIndices[r] = null;
+						}
+
+
+						/*if(isOn)
+						{
+							var startAngle = stepSize * i - halfSlice;
+							var endAngle = stepSize * i + halfSlice;
+							createArc(center, radius, startAngle, endAngle, thickness + overlap);
+						}*/
+
+						//createCircle(getPolarPoint(center, radius, stepSize * i), 10, isOn ? "red" : "black");
+					}
 				}
 			}
 
 			function createArc(center, radius, startAngle, endAngle, thickness)
 			{
 				var startPoint = getPolarPoint(center, radius, startAngle);
-				var endPoint = getPolarPoint(center, radius, endAngle)
+				var endPoint = getPolarPoint(center, radius, endAngle);
 				var arcEl = document.createElementNS("http://www.w3.org/2000/svg", 'path');
 				var d = `M${startPoint.x} ${startPoint.y} `;
 				d += `A ${radius} ${radius} 0 0 1 ${endPoint.x} ${endPoint.y}`;
 
 				arcEl.setAttribute("d",d);
-				arcEl.style.stroke = "#000";
+				arcEl.style.stroke = "green";
+				//arcEl.style.strokeOpacity = 0.5;
 				arcEl.style.strokeWidth = thickness + "px";
 				arcEl.style.fill = "none";
 				svgCanvas.appendChild(arcEl);
 			}
 
+			function testBit(num, bit)
+			{
+				return ((num>>bit) % 2 != 0);
+			}
+
+			function getBinaryToGray(binary)
+			{
+				return binary ^ (binary >> 1);
+			}
+
 			function getPolarPoint(center, radius, angle)
 			{
-				var x = Math.cos(angle) * radius + center.x;
-				var y = Math.sin(angle) * radius + center.y;
+				var x = Math.cos(angle-offset) * radius + center.x;
+				var y = Math.sin(angle-offset) * radius + center.y;
 				return { x: x, y: y };
 			}
+
+			////////////////////////////
 
 			function adjust(el, amount)
 			{
@@ -129,6 +166,17 @@
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
+			}
+
+			function createCircle(center, radius, fillColor)
+			{
+				var el = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				
+				el.setAttribute("cx",center.x);
+				el.setAttribute("cy",center.y);
+				el.setAttribute("r",radius);
+				el.setAttribute("fill", fillColor);
+				svgCanvas.appendChild(el);
 			}
 		</script>
 	</body>
